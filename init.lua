@@ -210,6 +210,26 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+local function get_python_path(workspace)
+  local path = require('lspconfig/util').path
+
+  -- Use activated virtualenv.
+  if vim.env.VIRTUAL_ENV then
+    return path.join(vim.env.VIRTUAL_ENV, 'bin', 'python')
+  end
+
+  -- Find and use virtualenv from pyenv in workspace directory.
+  local match = vim.fn.glob(path.join(workspace, '*/.python-version'))
+  if match ~= '' then
+    local pyenv_root = vim.fn.trim(vim.fn.system 'pyenv root')
+    local python_version = vim.fn.trim(vim.fn.system('pyenv version-name', match))
+    return path.join(pyenv_root, 'versions', python_version, 'bin', 'python')
+  end
+
+  -- Fallback to system Python.
+  return vim.fn.exepath 'python3' or vim.fn.exepath 'python' or 'python'
+end
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -538,7 +558,12 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {
+          filetypes = { 'python' },
+          on_init = function(client)
+            client.config.settings.python.pythonPath = get_python_path(client.config.root_dir)
+          end,
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
