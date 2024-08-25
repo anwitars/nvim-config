@@ -58,26 +58,29 @@ Register_keymaps = function(keymaps, previous_keys)
         description = value
       elseif index == 2 then
         mapping = value
+      else
+        print('Invalid keymap' .. vim.inspect(keymaps))
       end
     end
 
     if description then
-      km.set('n', '<leader>' .. keys, mapping)
-      return { description }
+      return { { '<leader>' .. keys, mapping, desc = description, { mode = 'n' } } }
     end
   end
 
+  table.insert(result, { '<leader>' .. keys, group = keymaps.name })
+
+  keymaps.name = nil
+
   for key, mapping in pairs(keymaps) do
-    if type(key) == 'number' then
-      return { mapping }
-    end
-    if type(mapping) == 'table' then
-      result[key] = Register_keymaps(mapping, keys .. key)
-    elseif type(mapping) == 'string' then
-      result[key] = mapping
+    if type(mapping) == 'string' then
+      table.insert(result, { '<leader>' .. keys .. key, mapping, { mode = 'n' } })
+    elseif type(mapping) == 'table' then
+      for _, value in ipairs(Register_keymaps(mapping, keys .. key)) do
+        table.insert(result, value)
+      end
     else
-      local description = mapping[1]
-      result[key] = { description }
+      print('Invalid keymap' .. vim.inspect(keymaps))
     end
   end
 
@@ -106,7 +109,8 @@ Anwitars_keymaps = {
     name = 'file',
     f = { 'Find file', '<cmd>Telescope find_files<CR>' },
     g = { 'Find file in project', '<cmd>Telescope git_files<CR>' },
-    w = { 'Find text in file', '<cmd>Telescope live_grep<CR>' },
+    w = { 'Find text in file', '<cmd>Telescope git_grep<CR>' },
+    r = { 'Find text in file', '<cmd>Telescope live_grep<CR>' },
     p = { 'Peek file path', "<cmd>echo expand('%')<CR>" },
     d = { 'Find git diff', '<cmd>Telescope git_status<CR>' },
     b = { 'Find buffer', '<cmd>Telescope buffers<CR>' },
@@ -184,6 +188,6 @@ Anwitars_keymaps = {
 
 M.remappings = Register_keymaps(Anwitars_keymaps)
 
-require('which-key').register(M.remappings, { prefix = '<leader>' })
+require('which-key').add(M.remappings)
 
 return M
