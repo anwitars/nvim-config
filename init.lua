@@ -223,6 +223,16 @@ local function get_python_path(workspace)
   if vim.env.VIRTUAL_ENV then
     return path.join(vim.env.VIRTUAL_ENV, 'bin', 'python')
   end
+
+  if vim.fn.executable 'poetry' == 1 then
+    return vim.fn.trim(vim.fn.system 'poetry run which python')
+  end
+
+  if vim.fn.executable 'pyenv' == 1 then
+    return vim.fn.trim(vim.fn.system 'pyenv which python')
+  end
+
+  return vim.fn.trim(vim.fn.system 'which python')
 end
 
 -- [[ Configure and install plugins ]]
