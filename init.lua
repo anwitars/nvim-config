@@ -631,8 +631,24 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
-        --
+        tsserver = {
+          on_attach = function(client)
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+          end,
+        },
+
+        eslint = {
+          settings = {
+            format = false,
+          },
+        },
+
+        black = {
+          settings = {
+            format = false,
+          },
+        },
 
         lua_ls = {
           -- cmd = {...},
@@ -670,10 +686,19 @@ require('lazy').setup({
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
+
+            local extra_capabilities = server.capabilities or {}
+            if server_name == 'tsserver' then
+              extra_capabilities = {
+                documentFormattingProvider = false,
+              }
+            end
+
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for tsserver)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, extra_capabilities)
+
             require('lspconfig')[server_name].setup(server)
           end,
         },
@@ -712,8 +737,10 @@ require('lazy').setup({
         -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
         --
-        javascript = { { 'prettierd', 'prettier', stop_after_first = true } },
-        typescript = { { 'prettierd', 'prettier', stop_after_first = true } },
+        javascript = { { 'prettier', stop_after_first = true } },
+        typescript = { { 'prettier', stop_after_first = true } },
+        javascriptreact = { { 'prettier', stop_after_first = true } },
+        typescriptreact = { { 'prettier', stop_after_first = true } },
       },
     },
   },
