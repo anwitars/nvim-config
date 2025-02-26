@@ -180,7 +180,17 @@ Anwitars_keymaps = {
   },
   t = {
     name = 'tools',
-    t = { 'Toggle terminal', '<cmd>ToggleTerm<CR>' },
+    t = {
+      'Run terminal command',
+      function()
+        local command = vim.fn.input 'Command: '
+        if command == '' then
+          return
+        end
+
+        vim.cmd('terminal ' .. command)
+      end,
+    },
     C = {
       name = 'Copilot',
       e = { 'Enable', '<cmd>Copilot enable<CR>' },
