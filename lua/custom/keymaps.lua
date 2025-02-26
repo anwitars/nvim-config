@@ -140,7 +140,7 @@ Anwitars_keymaps = {
       l = { 'Line diagnostics', '<cmd>lua vim.diagnostic.open_float()<CR>' },
       n = { 'Next diagnostic', '<cmd>lua vim.diagnostic.goto_next()<CR>' },
       p = { 'Previous diagnostic', '<cmd>lua vim.diagnostic.goto_prev()<CR>' },
-      b = { 'Buffer diagnostics', '<cmd>TroubleToggle document_diagnostics<CR>' },
+      b = { 'Buffer diagnostics', '<cmd>Trouble diagnostics filter.buf=0<CR>' },
     },
     g = {
       name = 'goto',
