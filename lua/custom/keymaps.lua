@@ -108,6 +108,16 @@ local delete_all_buffers = function()
   end
 end
 
+local flip_background_brightness = function()
+  local colors_name = vim.g.colors_name
+
+  if colors_name == 'catppuccin-mocha' then
+    vim.cmd 'colorscheme catppuccin-latte'
+  else
+    vim.cmd 'colorscheme catppuccin-mocha'
+  end
+end
+
 Anwitars_keymaps = {
   f = {
     name = 'file',
@@ -187,6 +197,10 @@ Anwitars_keymaps = {
   o = {
     name = 'Open',
     d = { 'Open current buffer directory', '<cmd>e %:h<CR>' },
+  },
+  e = {
+    name = 'Etc',
+    b = { 'Toggle background brightness', flip_background_brightness },
   },
 }
 
