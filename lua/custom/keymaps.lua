@@ -8,6 +8,10 @@ km.set('n', '<C-Down>', '<C-w>j', { noremap = true, silent = true })
 km.set('n', '<C-Left>', '<C-w>h', { noremap = true, silent = true })
 km.set('n', '<C-Right>', '<C-w>l', { noremap = true, silent = true })
 
+-- when I use English keyboard layout
+km.set({ 'n', 'v' }, '`', '0', { noremap = true, silent = true })
+km.set({ 'n', 'v' }, "'", '$', { noremap = true, silent = true })
+
 -- resize windows with arrows
 km.set('n', '<C-S-Up>', ':resize +2<CR>', { noremap = true, silent = true })
 km.set('n', '<C-S-Down>', ':resize -2<CR>', { noremap = true, silent = true })
