@@ -637,6 +637,7 @@ require('lazy').setup({
         pyright = {
           filetypes = { 'python' },
           on_init = function(client)
+            client.config.settings.python.venvPath = '/home/dewitars/.pyenv/versions'
             client.config.settings.python.pythonPath = get_python_path(client.config.root_dir)
           end,
         },
@@ -744,7 +745,7 @@ require('lazy').setup({
         -- languages here or re-enable it for the disabled ones.
         local disable_filetypes = { c = true, cpp = true }
         return {
-          timeout_ms = 500,
+          timeout_ms = 1000,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
         }
       end,
@@ -753,10 +754,10 @@ require('lazy').setup({
         -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
         --
-        javascript = { { 'prettier', stop_after_first = true } },
-        typescript = { { 'prettier', stop_after_first = true } },
-        javascriptreact = { { 'prettier', stop_after_first = true } },
-        typescriptreact = { { 'prettier', stop_after_first = true } },
+        javascript = { { 'prettierd', stop_after_first = true } },
+        typescript = { { 'prettierd', stop_after_first = true } },
+        javascriptreact = { { 'prettierd', stop_after_first = true } },
+        typescriptreact = { { 'prettierd', stop_after_first = true } },
       },
     },
   },
