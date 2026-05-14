@@ -121,13 +121,13 @@ end
 Anwitars_keymaps = {
   f = {
     name = 'file',
-    f = { 'Find file', '<cmd>Telescope find_files<CR>' },
+    f = { 'Find file', '<cmd>Telescope find_files previewer=false<CR>' },
     g = { 'Find file in project', '<cmd>Telescope git_files<CR>' },
     w = { 'Find text in file', '<cmd>Telescope git_grep<CR>' },
     r = { 'Find text in file', '<cmd>Telescope live_grep<CR>' },
     p = { 'Peek file path', "<cmd>echo expand('%')<CR>" },
     d = { 'Find git diff', '<cmd>Telescope git_status<CR>' },
-    b = { 'Find buffer', '<cmd>Telescope buffers<CR>' },
+    b = { 'Find buffer', '<cmd>Telescope buffers previewer=false<CR>' },
     c = { 'Copy file path to system clipboard', "<cmd>let @+ = expand('%')<CR>" },
   },
   y = { 'Copy to system clipboard', '"+y' },
